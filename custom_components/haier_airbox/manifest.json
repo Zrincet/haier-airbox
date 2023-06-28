@@ -1,0 +1,15 @@
+{
+  "domain": "airbox",
+  "name": "AirBox",
+  "codeowners": [
+    "@Zrincet",
+    "@hass_zxl"
+  ],
+  "version": "1.0.0",
+  "issue_tracker": "https://github.com/Zrincet/python-broadlink/issues",
+  "dependencies": [],
+  "documentation": "https://github.com/Zrincet/python-broadlink",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "requirements": []
+}
