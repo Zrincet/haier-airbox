@@ -1,7 +1,9 @@
-# haire-airbox
-海尔空气盒子接入homeassistant
+# Haire Airbox 海尔空气盒子
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
-FORK论坛上一个大佬的代码，并传到github，方便协同修改
+海尔空气盒子接入Home Assistant插件
+
+FORK https://github.com/NullYing/haire-airbox
 
 代码来源： https://bbs.hassbian.com/thread-9234-1-1.html
 作者： zxl_hass
@@ -13,12 +15,39 @@ FORK论坛上一个大佬的代码，并传到github，方便协同修改
 注意：
 
 1. 测试了IOS 15.2.1无法正常安装示例程序，没辙了就将代码重新编译了并安装到手机，可以正常使用
-2. 安卓版示例程序无法选择协议，会出现无反应
+2. 安卓版在网上找EasyLink的apk，实测3.2版本可以正常配网
 3. IOS程序配网时，需要选择Mode，可能是V2，也可能是Plus，测试了一次成功就没再测试
 
+## 安装
+1. HACS安装：在Home Assistant中安装HACS，并添加自定义库，选择集成进行安装。
+2. 手动安装：在custom_components目录下创建airbox目录，将文件拷贝到该目录下。
+
+## 配置
+传感器和开关：
+```yaml
+sensor:
+  - platform: airbox
+    host: 10.19.230.123
+    scan_interval: 60
+switch:
+  - platform: airbox
+    host: 10.19.230.123  
+    switches:
+      iptv_vol:   #这个名字自己随意
+        friendly_name: IPTV音量
+        command_on:  ''                
+        command_off: ''  
+      iptv_channel:   #这个名字自己随意
+        friendly_name: IPTV频道
+        command_on:  ''                
+        command_off: '' 
+```
+红外学码和发吗：
+
+
+开发者工具>服务里面去调用学码服务（发射红外码同理），host地址填空气盒子的IP地址，点击调用服务，然后空气盒子的PM2.5指示灯会变成红色，按下需要学习的按键，学码成功后，学到的码会出现在通知里，复制之后填到command_on：或command_off：后面，全部学完后重启hass，完成。
 
 ## Changelog
 
-1. Fork 版本 2021年9月18日
-2. 增加pm2.5 (评论区回复的，作者：tjsyk https://bbs.hassbian.com/forum.php?mod=redirect&goto=findpost&ptid=9234&pid=337656)
-3. 填入配网方法
+1. Fork https://github.com/NullYing/haire-airbox
+2. 可以在HACS中通过自定义库进行安装
