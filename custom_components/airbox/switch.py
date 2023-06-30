@@ -55,7 +55,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the AirBox switches."""
-    _LOGGER.error('Set up the AirBox switches.')
+    _LOGGER.info('Set up the AirBox switches.')
     devices = config.get(CONF_SWITCHES)
     host = config.get(CONF_HOST)
     retry_times = config.get(CONF_RETRY)
