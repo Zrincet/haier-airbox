@@ -9,7 +9,7 @@ from homeassistant.const import CONF_HOST
 import homeassistant.helpers.config_validation as cv
 from homeassistant.util.dt import utcnow
 
-from const import CONF_PACKET, DOMAIN, SERVICE_LEARN, SERVICE_SEND
+from .const import CONF_PACKET, DOMAIN, SERVICE_LEARN, SERVICE_SEND
 
 _LOGGER = logging.getLogger(__name__)
 

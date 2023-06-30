@@ -15,8 +15,8 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
 
 from . import async_setup_service
-from AirBox import device
-from const import DOMAIN
+from .AirBox import device
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
