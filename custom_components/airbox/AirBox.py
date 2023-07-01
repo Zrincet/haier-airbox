@@ -54,7 +54,7 @@ class device(object):
         with self.lock:
             while True:
                 ready_to_read, ready_to_write, in_error = \
-                    select.select([self.cs], [], [], 0.4)
+                    select.select([self.cs], [], [], 5.0)
                 if ready_to_read:
                     _data = self.cs.recv(512)
                     if _data:
@@ -84,7 +84,7 @@ class device(object):
         # with self.lock:
         while True:
             ready_to_read, ready_to_write, in_error = \
-                select.select([self.cs], [], [], 0.9)
+                select.select([self.cs], [], [], 5.0)
             if ready_to_read:
                 _data = self.cs.recv(1024)
                 if _data:
@@ -104,7 +104,7 @@ class device(object):
     def connect(self):
         try:
             self.cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.cs.settimeout(0.5)
+            self.cs.settimeout(5.0)
             self.cs.connect((self.host, self.port))
             mac_packet = self.cs.recv(512)
             mac = None
