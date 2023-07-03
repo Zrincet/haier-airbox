@@ -52,7 +52,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     dev.append(AirBoxSensor(_airbox_data, name, 'humidity', '%', 'mdi:stack-overflow', "humidity"))
     dev.append(AirBoxSensor(_airbox_data, name, 'ssd', '', 'mdi:flash-circle', ""))
     dev.append(AirBoxSensor(_airbox_data, name, 'voc', CONCENTRATION_MICROGRAMS_PER_CUBIC_METER, '', "volatile_organic_compounds"))
-    dev.append(AirBoxSensor(_airbox_data, name, 'pm25', 'μg/m³', 'mdi:flash-circle', "pm25"))
+    dev.append(AirBoxSensor(_airbox_data, name, 'pm25', '', 'mdi:flash-circle', "pm25"))
     add_devices(dev)
 
 
@@ -124,17 +124,16 @@ class AirBoxData(object):
             return realHumi
 
     def getRealPM25(self, level):
-        #realHumi = round((humi / 10), 1)
         if level == 0:
-            return round(70.0 / 100.0 * 25.0, 1) + random.randint(0,5)
+            return "优"
         elif level == 1:
-            return round(70.0 / 100.0 * 75.0, 1) + random.randint(0,5)
+            return "良"
         elif level == 2:
-            return round(70.0 / 100.0 * 125.0, 1) + random.randint(0,5)
+            return "中"
         elif level == 3:
-            return round(70.0 / 100.0 * 325.0, 1) + random.randint(0,5)
+            return "差"
         else:
-            return 0.0
+            return "未知"
             
     # 舒适度算法：
     def comfortScore(self, temp, humi, v):
