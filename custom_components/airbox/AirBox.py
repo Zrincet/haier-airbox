@@ -42,7 +42,6 @@ class device(object):
         try:
             is_tx_cpl = self.cs.sendall(data)
         except Exception as err:
-            _LOGGER.error(f'Wrong {err}')
             self.cs.close()
             self.connect()
             is_tx_cpl = self.cs.sendall(data)
