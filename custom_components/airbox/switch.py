@@ -149,7 +149,7 @@ class AirBoxSwitch(SwitchEntity, RestoreEntity):
 
     @Throttle(TIME_BETWEEN_UPDATES)
     def update(self):
-        _LOGGER.warning("Update Switch")
+        _LOGGER.info("Update Switch")
         try:
             _data = self._device.check_sensor()
             if _data:
