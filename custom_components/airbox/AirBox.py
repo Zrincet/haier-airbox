@@ -54,7 +54,7 @@ class device(object):
         with self.lock:
             while True:
                 ready_to_read, ready_to_write, in_error = \
-                    select.select([self.cs], [], [], 5.0)
+                    select.select([self.cs], [], [], 3.0)
                 if ready_to_read:
                     _data = self.cs.recv(512)
                     if _data:
@@ -64,42 +64,65 @@ class device(object):
         return response
 
     def check_sensor(self):
-        self.req_packet[40:52] = self.mac
-        response = self.send_packet(bytes(self.req_packet))
-        if response:
-            return response
-        return False
+        try:
+            self.req_packet[40:52] = self.mac
+            response = self.send_packet(bytes(self.req_packet))
+            if response:
+                self.close()
+                return response
+            self.close()
+            return False
+        except Exception as erro:
+            self.close()
+            return False
 
     def send_ir(self, data):
-        self.ir_packet[48:60] = self.mac
-        data_len = len(data) + 48
-        self.ir_packet[15] = (data_len % 256)
-        self.ir_packet[14] = (data_len // 256)
-        response = self.send_packet(bytes(self.ir_packet) + data)
-        if response:
-            return response
-        return False
+        try:
+            self.ir_packet[48:60] = self.mac
+            data_len = len(data) + 48
+            self.ir_packet[15] = (data_len % 256)
+            self.ir_packet[14] = (data_len // 256)
+            response = self.send_packet(bytes(self.ir_packet) + data)
+            if response:
+                self.close()
+                return response
+            self.close()
+            return False
+        except Exception as erro:
+            self.close()
+            return False
 
     def find_ir_packet(self):
-        # with self.lock:
-        while True:
-            ready_to_read, ready_to_write, in_error = \
-                select.select([self.cs], [], [], 5.0)
-            if ready_to_read:
-                _data = self.cs.recv(1024)
-                if _data:
-                    if _data[2] == 0x65 and _data[3] == 0xFE:
-                        return _data
-            else:
-                break
-        return False
+        try:
+            # with self.lock:
+            while True:
+                ready_to_read, ready_to_write, in_error = \
+                    select.select([self.cs], [], [], 5.0)
+                if ready_to_read:
+                    _data = self.cs.recv(1024)
+                    if _data:
+                        if _data[2] == 0x65 and _data[3] == 0xFE:
+                            self.close()
+                            return _data
+                else:
+                    break
+            self.close()
+            return False
+        except Exception as erro:
+            self.close()
+            return False
 
     def enter_learning(self):
-        self.learning_packet[40:52] = self.mac
-        response = self.send_packet(bytes(self.learning_packet))
-        if response:
-            return response
-        return False
+        try:
+            self.learning_packet[40:52] = self.mac
+            response = self.send_packet(bytes(self.learning_packet))
+            if response:
+                return response
+            self.close()
+            return False
+        except Exception as erro:
+            self.close()
+            return False
 
     def connect(self):
         try:
@@ -113,4 +136,11 @@ class device(object):
             self.cs.recv(512)  # 每当建立连接时服务器会直接回复2帧数据，先过滤掉
             return mac
         except Exception as erro:
+            self.close()
             return False
+
+    def close(self):
+        try:
+            self.cs.close()
+        except Exception as erro:
+            pass
