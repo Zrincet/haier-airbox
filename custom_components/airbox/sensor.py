@@ -149,15 +149,18 @@ class AirBoxData(object):
             _data = self._air_device.check_sensor()
             if _data is False:
                 _LOGGER.error("Data is None")
-            for data in _data:
-                if len(data) == 109 and data[2] == 0x27 and data[3] == 0x15:  # 查询的返回数据长度为109 27 15
-                    temperature = self.getRealTemp(int(data[92]) << 8 | int(data[93]))#format(float(a)/float(b),'.2f')
-                    humidity = self.getRealHumi(int(data[94]) << 8 | int(data[95])) + 3
-                    ssd = self.comfortScore(temperature, humidity, 0.7)
-                    voc = round(int(data[98]<<8|data[99])/1000,3)
-                    pm25 = self.getRealPM25(int(data[97]))
-                    self.data = {'temperature': format(temperature,'.1f'), 'humidity': format(humidity,'.1f'), 'ssd': ssd, 'voc': format(voc * 1000,'.1f'), 'pm25': pm25}
-                    break
+                self.data = {'temperature': 0.0, 'humidity': 0.0, 'ssd': 0,
+                             'voc': 0.0, 'pm25': "未知"}
+            else:
+                for data in _data:
+                    if len(data) == 109 and data[2] == 0x27 and data[3] == 0x15:  # 查询的返回数据长度为109 27 15
+                        temperature = self.getRealTemp(int(data[92]) << 8 | int(data[93]))#format(float(a)/float(b),'.2f')
+                        humidity = self.getRealHumi(int(data[94]) << 8 | int(data[95])) + 3
+                        ssd = self.comfortScore(temperature, humidity, 0.7)
+                        voc = round(int(data[98]<<8|data[99])/1000,3)
+                        pm25 = self.getRealPM25(int(data[97]))
+                        self.data = {'temperature': format(temperature,'.1f'), 'humidity': format(humidity,'.1f'), 'ssd': ssd, 'voc': format(voc * 1000,'.1f'), 'pm25': pm25}
+                        break
 
         except Exception:
             _LOGGER.error("HaierAirBox get information error")
