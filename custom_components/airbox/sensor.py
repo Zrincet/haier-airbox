@@ -6,6 +6,7 @@ import socket
 import time
 from datetime import timedelta
 
+import select
 import voluptuous as vol
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
@@ -146,7 +147,7 @@ class AirBoxData(object):
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         try:
-            _data = self._air_device.check_sensor()
+            _data = self._air_device.getSensor()
             if _data is False:
                 _LOGGER.error("Data is None")
                 self.data = {'temperature': 0.0, 'humidity': 0.0, 'ssd': 0,
@@ -165,4 +166,3 @@ class AirBoxData(object):
         except Exception:
             _LOGGER.error("HaierAirBox get information error")
             raise
-

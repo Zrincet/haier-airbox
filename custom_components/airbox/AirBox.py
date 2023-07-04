@@ -145,3 +145,32 @@ class device(object):
             self.cs.close()
         except Exception as erro:
             pass
+
+    def getSensor(self):
+        response = []
+        cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            cs.settimeout(5.0)
+            cs.connect((self.host, self.port))
+            mac_packet = cs.recv(512)
+            mac = None
+            if len(mac_packet) == 95:
+                mac = list(mac_packet[40:52])
+            cs.recv(512)
+            self.req_packet[40:52] = mac
+            is_tx_cpl = cs.sendall(bytes(self.req_packet))
+            while True:
+                ready_to_read, ready_to_write, in_error = \
+                    select.select([cs], [], [], 3.0)
+                if ready_to_read:
+                    _data = cs.recv(512)
+                    if _data:
+                        response.append(_data)
+                else:
+                    break
+        except Exception as e:
+            _LOGGER.error(str(e))
+        finally:
+            cs.close()
+        return response
+
