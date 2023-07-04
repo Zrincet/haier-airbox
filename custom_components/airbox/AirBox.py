@@ -73,7 +73,7 @@ class device(object):
             self.close()
             return False
         except Exception as erro:
-            _LOGGER.error(erro)
+            _LOGGER.error(str(erro))
             self.close()
             return False
 
