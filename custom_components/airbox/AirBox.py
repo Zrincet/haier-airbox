@@ -48,6 +48,7 @@ class device(object):
         finally:
             pass
         if is_tx_cpl is not None:
+            _LOGGER.error("TX error: %s", is_tx_cpl)
             return None
         response = []
         with self.lock:
@@ -72,6 +73,7 @@ class device(object):
             self.close()
             return False
         except Exception as erro:
+            _LOGGER.error(erro)
             self.close()
             return False
 
