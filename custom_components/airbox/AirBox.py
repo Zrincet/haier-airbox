@@ -148,9 +148,9 @@ class device(object):
 
     def getSensor(self):
         response = []
+        socket.setdefaulttimeout(5)
         cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            cs.settimeout(5.0)
             cs.connect((self.host, self.port))
             mac_packet = cs.recv(512)
             mac = None
