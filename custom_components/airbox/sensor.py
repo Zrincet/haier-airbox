@@ -10,7 +10,8 @@ import select
 import voluptuous as vol
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
-                                 CONF_HOST, CONF_NAME, TEMP_CELSIUS)
+                                 CONF_HOST, CONF_NAME)
+from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
@@ -49,7 +50,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     _airbox_data = AirBoxData(_air_device)
     _airbox_data.update()
     dev = list()
-    dev.append(AirBoxSensor(_airbox_data, name, 'temperature', TEMP_CELSIUS, 'mdi:flash-circle', "temperature"))
+    dev.append(AirBoxSensor(_airbox_data, name, 'temperature', UnitOfTemperature.CELSIUS, 'mdi:flash-circle', "temperature"))
     dev.append(AirBoxSensor(_airbox_data, name, 'humidity', '%', 'mdi:stack-overflow', "humidity"))
     dev.append(AirBoxSensor(_airbox_data, name, 'ssd', '', 'mdi:flash-circle', ""))
     dev.append(AirBoxSensor(_airbox_data, name, 'voc', CONCENTRATION_MICROGRAMS_PER_CUBIC_METER, '', "volatile_organic_compounds"))

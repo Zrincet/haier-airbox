@@ -64,6 +64,11 @@ class device(object):
         return response
 
     def check_sensor(self):
+        if not self.mac:
+            self.connect()
+        if not self.mac:
+            _LOGGER.error("HaierAirBox enter_learning connect fail")
+            return False
         try:
             self.req_packet[40:52] = self.mac
             response = self.send_packet(bytes(self.req_packet))
@@ -73,7 +78,7 @@ class device(object):
             self.close()
             return False
         except Exception as erro:
-            _LOGGER.error(str(erro))
+            _LOGGER.exception("Error in check_sensor: %s", erro)
             self.close()
             return False
 
@@ -135,8 +140,10 @@ class device(object):
             if len(mac_packet) == 95:
                 mac = list(mac_packet[40:52])
             self.cs.recv(512)  # 每当建立连接时服务器会直接回复2帧数据，先过滤掉
+            self.mac = mac
             return mac
         except Exception as erro:
+            _LOGGER.exception("Connect error: %s", erro)
             self.close()
             return False
 

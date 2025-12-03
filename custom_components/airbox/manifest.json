@@ -5,7 +5,7 @@
     "@Zrincet",
     "@hass_zxl"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "issue_tracker": "https://github.com/Zrincet/python-broadlink/issues",
   "dependencies": [],
   "documentation": "https://github.com/Zrincet/python-broadlink",
