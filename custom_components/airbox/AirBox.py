@@ -90,12 +90,9 @@ class device(object):
             self.ir_packet[14] = (data_len // 256)
             response = self.send_packet(bytes(self.ir_packet) + data)
             if response:
-                self.close()
                 return response
-            self.close()
             return False
         except Exception as erro:
-            self.close()
             return False
 
     def find_ir_packet(self):
@@ -111,10 +108,8 @@ class device(object):
                             return _data
                 else:
                     break
-            self.close()
             return False
         except Exception as erro:
-            self.close()
             return False
 
     def enter_learning(self):
