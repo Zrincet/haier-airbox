@@ -103,12 +103,11 @@ class device(object):
             # with self.lock:
             while True:
                 ready_to_read, ready_to_write, in_error = \
-                    select.select([self.cs], [], [], 5.0)
+                    select.select([self.cs], [], [], 0.4)
                 if ready_to_read:
                     _data = self.cs.recv(1024)
                     if _data:
                         if _data[2] == 0x65 and _data[3] == 0xFE:
-                            self.close()
                             return _data
                 else:
                     break
